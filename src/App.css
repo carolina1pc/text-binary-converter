@@ -468,6 +468,24 @@
   margin-bottom: 30px;
 }
 
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.icon-button {
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.icon-button:hover {
+  transform: translateY(-1px);
+}
+
 .page-wrap {
   padding: 40px 20px;
   min-height: 100vh;

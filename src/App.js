@@ -2,6 +2,7 @@ import './App.css';
 import { useState, useEffect } from "react";
 import ThemeToggleIcon from './components/ThemeToggleIcon';
 import SwitchIcon from './components/SwitchIcon';
+import CopyIcon from './components/CopyIcon';
 
 function App() {
   const [text, setText] = useState("");
@@ -10,6 +11,7 @@ function App() {
   const [isLightTheme, setIsLightTheme] = useState(false);
   const [particles, setParticles] = useState([]);
   const [raindrops, setRaindrops] = useState([]);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const getViewportCategory = () => {
@@ -137,6 +139,27 @@ function App() {
     return mode === "textToBinary" ? "Binary result..." : "Text result...";
   };
 
+  const copyOutput = async () => {
+    const value = getOutputValue();
+    if (!value) return;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(value);
+      } else {
+        const temp = document.createElement('textarea');
+        temp.value = value;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (e) {
+      console.error('Copy failed', e);
+    }
+  };
+
   return (
     <div className={`App ${isLightTheme ? 'light-theme' : ''}`}>
       <div className="particle-container">
@@ -243,9 +266,22 @@ function App() {
           </div>
 
           <div style={{ textAlign: "left" }}>
-            <h3 className="section-header">
-              {mode === "textToBinary" ? "Binary Result:" : "Text Result:"}
-            </h3>
+            <div className="output-header">
+              <h3 className="section-header" style={{ margin: 0 }}>
+                {mode === "textToBinary" ? "Binary Result:" : "Text Result:"}
+              </h3>
+              <button
+                type="button"
+                className="neon-button icon-button"
+                onClick={copyOutput}
+                aria-label="Copy converted text"
+                title={copied ? 'Copied!' : 'Copy'}
+                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
+                <CopyIcon size={18} />
+                <span style={{ fontSize: '0.9rem' }}>{copied ? 'Copied' : 'Copy'}</span>
+              </button>
+            </div>
             <textarea
               rows="5"
               value={getOutputValue()}
