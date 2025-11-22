@@ -7,7 +7,7 @@ A simple and intuitive React application that allows users to convert text to bi
 
 ## Live Demo
 
-asdf
+[Link here](https://text-binary-converter.netlify.app/)
 
 ## Installation & Setup
 
